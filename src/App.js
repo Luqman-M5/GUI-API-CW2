@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import { fetchWeatherByCity } from './weatherService';
+import { useState } from 'react';
 
 function App() {
+  const [weather, setWeather] = useState(null);
+
+  const handleSearch = async () => {
+    const data = await fetchWeatherByCity("London");
+    setWeather(data);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={handleSearch}>Get Weather</button>
+      {weather && (
+        <div>
+          <p>Temperature: {weather.main.temp}°C</p>
+          <p>Condition: {weather.weather[0].main}</p>
+        </div>
+      )}
     </div>
   );
 }
